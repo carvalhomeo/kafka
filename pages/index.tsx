@@ -8,7 +8,7 @@ export default function Home() {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    fetch(`http://localhost:3002/start/${msg}`, { method: "GET" });
+    fetch(`${process.env.APIURL}/start/${msg}`, { method: "GET" });
     router.push(`route/${msg}`);
   };
 
