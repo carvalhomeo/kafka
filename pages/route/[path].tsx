@@ -13,7 +13,7 @@ const center = {
   lng: -47.882778,
 };
 
-const socket: Socket = connect(process.env.SOCKETADDRESS!);
+const socket: Socket = connect(process.env.NEXT_PUBLIC_SOCKETADDRESS!);
 
 const Path = () => {
   const router = useRouter();
@@ -25,7 +25,7 @@ const Path = () => {
   }>();
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: process.env.GOOGLEMAPSAPIKEY!,
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLEMAPSAPIKEY!,
   });
 
   useEffect(() => {
