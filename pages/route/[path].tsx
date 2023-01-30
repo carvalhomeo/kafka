@@ -50,10 +50,7 @@ const socket: Socket = connect(process.env.NEXT_PUBLIC_SOCKETADDRESS!);
 
 const Path = () => {
   const router = useRouter();
-  const [message, setMessage] = useState<{
-    latitude: number;
-    longitude: number;
-  }>();
+  const [message, setMessage] = useState<LocationObjectCoords>();
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLEMAPSAPIKEY!,
@@ -61,11 +58,8 @@ const Path = () => {
 
   useEffect(() => {
     socket.on("coordinates", (data) => {
-      console.log("pure data", data);
-      console.log("parsed data", JSON.parse(data));
-      const { latitude, longitude } = JSON.parse(data);
-      console.log("data", { latitude, longitude });
-      setMessage({ latitude, longitude });
+      const { coords } = JSON.parse(data);
+      setMessage(coords);
     });
   }, [socket]);
 
