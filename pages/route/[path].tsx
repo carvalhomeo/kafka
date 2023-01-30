@@ -61,7 +61,7 @@ const Path = () => {
 
   useEffect(() => {
     socket.on("coordinates", (data) => {
-      const { latitude, longitude } = data;
+      const { latitude, longitude } = JSON.parse(data);
       console.log("data", { latitude, longitude });
       setMessage({ latitude, longitude });
     });
