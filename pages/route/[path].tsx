@@ -58,6 +58,7 @@ const Path = () => {
 
   useEffect(() => {
     socket.on("coordinates", (data) => {
+      console.log(data);
       setMessage(JSON.parse(data));
     });
   }, [socket]);
