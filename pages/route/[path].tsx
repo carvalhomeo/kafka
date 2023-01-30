@@ -9,20 +9,48 @@ const containerStyle = {
 };
 
 const center = {
-  lat: -15.793889,
-  lng: -47.882778,
+  lat: 38.736946,
+  lng: -9.142685,
+};
+
+type LocationObjectCoords = {
+  /**
+   * The latitude in degrees.
+   */
+  latitude: number;
+  /**
+   * The longitude in degrees.
+   */
+  longitude: number;
+  /**
+   * The altitude in meters above the WGS 84 reference ellipsoid. Can be `null` on Web if it's not available.
+   */
+  altitude: number | null;
+  /**
+   * The radius of uncertainty for the location, measured in meters. Can be `null` on Web if it's not available.
+   */
+  accuracy: number | null;
+  /**
+   * The accuracy of the altitude value, in meters. Can be `null` on Web if it's not available.
+   */
+  altitudeAccuracy: number | null;
+  /**
+   * Horizontal direction of travel of this device, measured in degrees starting at due north and
+   * continuing clockwise around the compass. Thus, north is 0 degrees, east is 90 degrees, south is
+   * 180 degrees, and so on. Can be `null` on Web if it's not available.
+   */
+  heading: number | null;
+  /**
+   * The instantaneous speed of the device in meters per second. Can be `null` on Web if it's not available.
+   */
+  speed: number | null;
 };
 
 const socket: Socket = connect(process.env.NEXT_PUBLIC_SOCKETADDRESS!);
 
 const Path = () => {
   const router = useRouter();
-  const [message, setMessage] = useState<{
-    id: string;
-    lat: number;
-    long: number;
-    last: boolean;
-  }>();
+  const [message, setMessage] = useState<LocationObjectCoords>();
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLEMAPSAPIKEY!,
@@ -30,10 +58,7 @@ const Path = () => {
 
   useEffect(() => {
     socket.on("coordinates", (data) => {
-      const coord = JSON.parse(data);
-      if (coord.id === router.query.path) {
-        setMessage(coord);
-      }
+      setMessage(JSON.parse(data));
     });
   }, [socket]);
 
@@ -41,7 +66,9 @@ const Path = () => {
     <div style={{ width: "100%", height: "100vh" }}>
       <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={13}>
         {message && (
-          <Marker position={{ lat: message.lat, lng: message.long }} />
+          <Marker
+            position={{ lat: message.latitude, lng: message.longitude }}
+          />
         )}
       </GoogleMap>
     </div>

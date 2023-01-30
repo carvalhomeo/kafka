@@ -14,7 +14,7 @@ export default function Home() {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    await api.get(`/start/${msg}`);
+    //await api.get(`/start/${msg}`);
 
     router.push(`route/${msg}`);
   };
